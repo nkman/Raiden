@@ -1,1 +1,2 @@
 newspaper
+TwitterAPI==2.3.4
