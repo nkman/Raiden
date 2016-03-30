@@ -1,2 +1,9 @@
-newspaper
+BeautifulSoup==3.2.1
 TwitterAPI==2.3.4
+argparse==1.2.1
+oauthlib==1.0.3
+requests==2.8.1
+requests-oauthlib==0.5.0
+rethinkdb==2.1.0-2
+wsgiref==0.1.2
+xmltodict==0.10.1
