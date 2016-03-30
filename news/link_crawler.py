@@ -1,10 +1,15 @@
+# -*- coding: utf-8 -*-
+
 #city list taken from - https://github.com/nshntarora/Indian-Cities-JSON
-import xmltodict, json
+import xmltodict, json, os
 import requests as req
 import rethinkdb as r
 from db import database
 
-f = open('./data/cities.json', 'r')
+FILE_PATH = os.path.join(os.path.dirname(__file__), 'data/cities.json')
+city_file = os.path.abspath(FILE_PATH)
+
+f = open(city_file, 'r')
 cities = f.read()
 f.close()
 
@@ -31,20 +36,19 @@ class LinkCrawler:
     r.db('raiden').table(self.table).insert(item).run(self.connection)
 
   def iterate_item(self, items, city):
-    items = json.loads(items)
-    items = items['rss']['item']
+    # items = json.loads(items)
+    items = items['rss']['channel']['item']
     for item in items:
       item['city'] = city
       del item['description']
-      save_json(json.dumps(item))
+      self.save_json(item)
 
   def get_data(self, city):
     print "Getting data of "+city["name"]
     data = req.get(self.url + city['name'])
     if(data.status_code == 200):
       try:
-        data_json = xmltodict.parse(data.text)
-        # data_json = json.dumps(data_json)
+        data_json = xmltodict.parse(str(data.text.encode('utf-8')))
         self.iterate_item(data_json, city)
       except Exception, e:
         print 'Error '+str(e)+' has been occured for city='+city["name"]
@@ -53,4 +57,4 @@ class LinkCrawler:
 
   def start(self):
     for city in self.cities:
-      get_data(city)
+      self.get_data(city)
