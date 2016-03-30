@@ -31,8 +31,10 @@ class Twitter:
         self.api = TwitterAPI(self.consumer_key, self.consumer_secret, self.access_token_key, self.access_token_secret)
 
     def stream_location(self):
-
-        req = self.api.request('statuses/filter', {'locations':'-74,40,-73,41'})
+        #bbox = left,bottom,right,top
+        #bbox = min Longitude , min Latitude , max Longitude , max Latitude 
+        req = self.api.request('statuses/filter', {'locations':'70.02, 7.80, 91.58, 35.67'})
+        #req = self.api.request('statuses/filter', {'locations':'77.1475, 28.5943, 77.3218, 28.6843'}) Delhi
         count = 0
         for item in req:
             r.db('raiden').table("twitter").insert(item).run(self.connection)
