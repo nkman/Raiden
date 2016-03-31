@@ -20,7 +20,7 @@ class dataSaver:
     self.cities = json.loads(cities)
     self.db = database.Database()
     self.connection = self.db.connection_var()
-    # self.create_table()
+    self.create_table()
 
   def create_table(self):
     try:
@@ -31,37 +31,37 @@ class dataSaver:
       print str(e)
 
   def get_data(self):
-    return r.db('raiden').table(self.link_table).run(self.connection)
+    a = []
+    d = r.db('raiden').table(self.link_table).pluck('link', 'id').run(self.connection)
+    for b in d:
+      a.append(b)
+    return a
 
   def data_extractor(self, group_1):
-    data = req.get(group_1.link)
+    data = req.get(group_1['link'])
     if(data.status_code == 200):
-      self.process_save_data(data, group_1.id)
+      self.process_save_data(data.text.encode('utf-8'), group_1['id'])
     else:
-      print 'Error occured to get data from ' + group_1.link
+      print 'Error occured to get data from ' + group_1['link']
 
   def data_iterate(self):
     whole_grouped_data = self.get_data()
 
-    f = open('sample.txt', 'w')
-    f.write(str(whole_grouped_data))
-    f.close()
-
     for datas in whole_grouped_data:
-      for data in datas.reduction:
-        self.data_extractor(data)
+      self.data_extractor(datas)
 
   def insertion(self, data):
+    print 'inserting'
     r.db('raiden').table(self.table).insert(data).run(self.connection)
 
-  def process_save_data(self, data):
-    soup = BeautifulSoup.BeautifulSoup(data, gid)
+  def process_save_data(self, data, gid):
+    soup = BeautifulSoup.BeautifulSoup(data)
     p_text = soup.findAll('p')
 
     a = ''
 
     for p in p_text:
-      a += str(p.renderContents())
+      a += BeautifulSoup.BeautifulSoup(p.renderContents()).text
 
     data_to_save = jsontree.jsontree()
 
@@ -70,5 +70,4 @@ class dataSaver:
     self.insertion(data_to_save)
 
   def start(self):
-    # self.data_iterate()
-    print self.get_data()
+    self.data_iterate()
