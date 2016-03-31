@@ -38,11 +38,16 @@ class dataSaver:
     return a
 
   def data_extractor(self, group_1):
-    data = req.get(group_1['link'])
-    if(data.status_code == 200):
-      self.process_save_data(data.text.encode('utf-8'), group_1['id'])
-    else:
-      print 'Error occured to get data from ' + group_1['link']
+
+    try:
+      data = req.get(group_1['link'])
+      if(data.status_code == 200):
+        self.process_save_data(data.text.encode('utf-8'), group_1['id'])
+      else:
+        print 'Error occured to get data from ' + group_1['link']
+    except Exception, e:
+      print 'Network Error'
+      pass
 
   def data_iterate(self):
     whole_grouped_data = self.get_data()
@@ -61,6 +66,7 @@ class dataSaver:
     a = ''
 
     for p in p_text:
+      a += ' '
       a += BeautifulSoup.BeautifulSoup(p.renderContents()).text
 
     data_to_save = jsontree.jsontree()
