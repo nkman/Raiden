@@ -40,13 +40,19 @@ class LinkCrawler:
     items = items['rss']['channel']['item']
     for item in items:
       item['city'] = city
-      item['status'] = 'undone'
+      item['status'] = 'neg'
       del item['description']
       self.save_json(item)
 
   def get_data(self, city):
     print "Getting data of "+city["name"]
-    data = req.get(self.url + city['name'])
+
+    try:
+      data = req.get(self.url + city['name'], verify=False)
+    except Exception, e:
+      print 'Network error for city=' + city['name']
+      return
+    
     if(data.status_code == 200):
       try:
         data_json = xmltodict.parse(str(data.text.encode('utf-8')))

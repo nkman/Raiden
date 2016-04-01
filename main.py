@@ -8,4 +8,4 @@ crawl = link_crawler.LinkCrawler()
 # crawl.start()
 
 scrap = data_scraper.dataSaver()
-print scrap.start()
+scrap.start()
