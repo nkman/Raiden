@@ -19,4 +19,5 @@ t_c = twitter.Twitter()
 
 # train.start_training()
 
-# predict.main()
+dbh = predict.dataDBHandler()
+dbh.iterate_text()
