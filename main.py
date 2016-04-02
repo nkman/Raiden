@@ -19,4 +19,4 @@ t_c = twitter.Twitter()
 
 # train.start_training()
 
-predict.main()
+# predict.main()

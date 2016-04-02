@@ -1,8 +1,50 @@
-import logging, os, nltk
+import logging, os, nltk, json
 from gensim.models import LdaModel
 from gensim import corpora
 from nltk.stem.wordnet import WordNetLemmatizer
 
+import rethinkdb as r
+from db import database
+
+class dataDBHandler(object):
+
+  def __init__(self):
+    self.db = database.Database()
+    self.connection = self.db.connection_var()
+    self.table = 'raw_data'
+    self.link_table = 'links'
+
+  def get_ids(self):
+    a = []
+    d = r.db('raiden').table(self.link_table).pluck('city', 'id').group('city').run(self.connection)
+    for b in d:
+      temp = {}
+      for b1 in b:
+        temp[b1[0]] = b1[1]
+
+      ids = []
+      for x in d[b]:
+        ids.append(x['id'])
+
+      a.append({'city': temp, 'ids': ids})
+    
+    #Output of the form ./samples/1.json
+    return a
+
+  def get_desc(self, ids):
+    text = ' '
+    for _id in ids:
+      d = r.db('raiden').table(self.table).filter({'gid': _id}).pluck('desc').run(self.connection)
+      for x in d:
+        text += x['desc']
+        text += '\n'
+
+    return text
+
+
+xxx = dataDBHandler()
+id_list = xxx.get_ids()
+xxx.get_desc(id_list[0]['ids'])
 
 class Predict():
   def __init__(self):
