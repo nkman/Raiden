@@ -9,7 +9,7 @@ logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=lo
 cwd = os.path.dirname(__file__)
 dictionary_path = os.path.abspath(os.path.join(cwd, 'models/dictionary.dict'))
 corpus_path = os.path.abspath(os.path.join(cwd, 'models/corpus.lda-c'))
-lda_num_topics = 100
+lda_num_topics = 20
 lda_model_path = os.path.abspath(os.path.join(cwd, 'models/lda_model_50_topics.lda'))
 
 dictionary = corpora.Dictionary.load(dictionary_path)

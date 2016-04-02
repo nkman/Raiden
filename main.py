@@ -1,6 +1,6 @@
 from twitter import twitter
 from news import link_crawler, data_scraper
-from news.topics import data, corpus, train
+from news.topics import data, corpus, train, predict
 
 t_c = twitter.Twitter()
 # t_c.stream_location()
@@ -16,4 +16,7 @@ t_c = twitter.Twitter()
 
 # corpus_c = corpus.corpusHandler()
 # corpus_c.iterate_tags()
-train.start_training()
+
+# train.start_training()
+
+predict.main()
