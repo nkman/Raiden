@@ -1,3 +1,10 @@
 venv
 *.pyc
 rethinkdb_data/
+rethinkdb_dump*
+*.lda-c
+*.index
+*.lda
+*.state
+*.vocab
+*.dict
