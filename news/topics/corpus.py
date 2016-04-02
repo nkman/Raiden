@@ -16,7 +16,6 @@ class corpusHandler:
     self.done = 0
 
     self.lem = WordNetLemmatizer()
-    self.tagged_data = self.get_data()
 
   def create_table(self):
     try:
@@ -37,6 +36,7 @@ class corpusHandler:
     r.db('raiden').table(self.corpus_table).insert(data).run(self.connection)
 
   def iterate_tags(self):
+    self.tagged_data = self.get_data()
     for __data in self.tagged_data:
       nouns = []
       words = [word for word in __data["words"] if word["pos"] in ["NN", "NNS"]]

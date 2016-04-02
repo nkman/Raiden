@@ -1,6 +1,6 @@
 from twitter import twitter
 from news import link_crawler, data_scraper
-from news.topics import data, corpus
+from news.topics import data, corpus, train
 
 t_c = twitter.Twitter()
 # t_c.stream_location()
@@ -14,5 +14,6 @@ t_c = twitter.Twitter()
 # tagging = data.dataHandler()
 # tagging.iterate_data()
 
-corpus_c = corpus.corpusHandler()
-corpus_c.iterate_tags()
+# corpus_c = corpus.corpusHandler()
+# corpus_c.iterate_tags()
+train.start_training()
