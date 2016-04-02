@@ -28,7 +28,7 @@ class Dictionary(object):
 
   def build(self):
     dictionary = corpora.Dictionary(tag["words"] for tag in self.cursor)
-    dictionary.filter_extremes(keep_n=10000)
+    dictionary.filter_extremes(keep_n=100000)
     dictionary.compactify()
     corpora.Dictionary.save(dictionary, self.dictionary_path)
 
@@ -67,7 +67,7 @@ def start_training():
   cwd = os.path.dirname(__file__)
   dictionary_path = os.path.abspath(os.path.join(cwd, 'models/dictionary.dict'))
   corpus_path = os.path.abspath(os.path.join(cwd, 'models/corpus.lda-c'))
-  lda_num_topics = 50
+  lda_num_topics = 100
   lda_model_path = os.path.abspath(os.path.join(cwd, 'models/lda_model_50_topics.lda'))
 
   corpus_cursor = dbHandler().get_data()
