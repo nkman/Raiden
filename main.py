@@ -1,15 +1,18 @@
 from twitter import twitter
 from news import link_crawler, data_scraper
-from news.topics import data as d
+from news.topics import data, corpus
 
 t_c = twitter.Twitter()
 # t_c.stream_location()
 
-crawl = link_crawler.LinkCrawler()
+# crawl = link_crawler.LinkCrawler()
 # crawl.start()
 
-scrap = data_scraper.dataSaver()
+# scrap = data_scraper.dataSaver()
 # scrap.start()
 
-tagging = d.dataHandler()
-tagging.iterate_data()
+# tagging = data.dataHandler()
+# tagging.iterate_data()
+
+corpus_c = corpus.corpusHandler()
+corpus_c.iterate_tags()

@@ -49,11 +49,14 @@ class dataHandler:
   def iterate_data(self):
     for _data in self.__data:
       words = []
+      #Make array of sentences. Similar to sentences.split('.')
       sentences = nltk.sent_tokenize(_data["desc"].lower())
 
       for sentence in sentences:
+        #Array of words in text. Similar to sentence.split(' ')
         tokens = nltk.word_tokenize(sentence)
         text = [word for word in tokens if word not in self.stopwords]
+        #Tag the words to noun(NN), conjunction(CC), preposition(IN), adverb(RB), adjective(JJ) etc..
         tagged_text = nltk.pos_tag(text)
 
         for word, tag in tagged_text:

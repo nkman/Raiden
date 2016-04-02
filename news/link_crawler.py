@@ -40,7 +40,7 @@ class LinkCrawler:
     items = items['rss']['channel']['item']
     for item in items:
       item['city'] = city
-      item['status'] = 'neg'
+      item['status'] = 'no'
       del item['description']
       self.save_json(item)
 
