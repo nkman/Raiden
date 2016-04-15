@@ -4,6 +4,7 @@ import xmltodict, json, BeautifulSoup, jsontree, os
 import requests as req
 import rethinkdb as r
 from db import database
+from newspaper import Article
 
 FILE_PATH = os.path.join(os.path.dirname(__file__), 'data/cities.json')
 city_file = os.path.abspath(FILE_PATH)
@@ -40,11 +41,12 @@ class dataSaver:
   def data_extractor(self, group_1):
 
     try:
-      data = req.get(group_1['link'])
-      if(data.status_code == 200):
-        self.process_save_data(data.text.encode('utf-8'), group_1['id'])
-      else:
-        print 'Error occured to get data from ' + group_1['link']
+      a = Article(group_1['link'])
+      a.download()
+      a.parse()
+      data = a.text.encode('ascii','ignore')
+      self.process_save_data(data, group_1['id'])
+
     except Exception, e:
       print 'Network Error'
       pass
@@ -60,19 +62,9 @@ class dataSaver:
     r.db('raiden').table(self.table).insert(data).run(self.connection)
 
   def process_save_data(self, data, gid):
-    soup = BeautifulSoup.BeautifulSoup(data)
-    p_text = soup.findAll('p')
-
-    a = ''
-
-    for p in p_text:
-      a += ' '
-      a += BeautifulSoup.BeautifulSoup(p.renderContents()).text
-
     data_to_save = jsontree.jsontree()
-
     data_to_save.gid = gid
-    data_to_save.desc = a
+    data_to_save.desc = data
     self.insertion(data_to_save)
 
   def start(self):

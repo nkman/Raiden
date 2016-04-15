@@ -8,8 +8,8 @@ t_c = twitter.Twitter()
 # crawl = link_crawler.LinkCrawler()
 # crawl.start()
 
-# scrap = data_scraper.dataSaver()
-# scrap.start()
+scrap = data_scraper.dataSaver()
+scrap.start()
 
 # tagging = data.dataHandler()
 # tagging.iterate_data()

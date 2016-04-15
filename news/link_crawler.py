@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 #city list taken from - https://github.com/nshntarora/Indian-Cities-JSON
-import xmltodict, json, os
+import xmltodict, json, os, time
 import requests as req
 import rethinkdb as r
 from db import database
@@ -61,6 +61,8 @@ class LinkCrawler:
         print 'Error '+str(e)+' has been occured for city='+city["name"]
     else:
       print 'Error in status code for city '+ city["name"]
+      os.system('say "Enter the captcha in browser manually"')
+      raw_input()
 
   def start(self):
     for city in self.cities:
