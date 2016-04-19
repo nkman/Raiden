@@ -24,3 +24,9 @@ sudo pip install newspaper
 # Corpus used for NLP operations
 echo "[Downloading NLP Corpus] ..."
 curl https://raw.githubusercontent.com/codelucas/newspaper/master/download_corpora.py | python
+
+echo "[Installing the gnustep-gui-runtime]"
+sudo apt-get install -y gnustep-gui-runtime
+
+echo "Installing necessary libraries"
+sudo pip install -U -r requirements.txt 

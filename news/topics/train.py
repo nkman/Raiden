@@ -12,11 +12,15 @@ class Corpus(object):
     self.tag_dictionary = tag_dictionary
     self.corpus_path = corpus_path
 
+  # Generator function, Convert document (a list of words) into the bag-of-words format = list of (token_id, token_count) 2-tuples. 
   def __iter__(self):
     for tag in self.cursor:
       yield self.tag_dictionary.doc2bow(tag["words"])
 
   def serialize(self):
+    # serialize(serializer, fname, corpus, id2word=None, index_fname=None, progress_cnt=None, labels=None, metadata=False)
+    # Iterate through the document stream corpus, saving the documents to fname and recording byte offset of each document. Save the resulting index structure to file index_fname (or fname.index is not set).
+
     BleiCorpus.serialize(self.corpus_path, self, id2word=self.tag_dictionary)
     return self
 
@@ -27,9 +31,16 @@ class Dictionary(object):
     self.dictionary_path = dictionary_path
 
   def build(self):
+    # mapping between normalized words and their integer ids.
     dictionary = corpora.Dictionary(tag["words"] for tag in self.cursor)
+
+    # Filter out tokens that appear
     dictionary.filter_extremes(keep_n=100000)
+
+    # Assign new word ids to all words.
     dictionary.compactify()
+
+    # Save the object to file
     corpora.Dictionary.save(dictionary, self.dictionary_path)
 
     return dictionary
@@ -56,7 +67,7 @@ class dbHandler:
     
   def get_data(self):
     a = []
-    d = r.db('raiden').table(self.corpus_table).run(self.connection)
+    d = r.db('Raiden').table(self.corpus_table).run(self.connection)
     for b in d:
       a.append(b)
     return a

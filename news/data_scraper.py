@@ -25,15 +25,15 @@ class dataSaver:
 
   def create_table(self):
     try:
-      r.db('raiden').table_create(self.table).run(self.connection)
-      print 'Created table [raiden.'+self.table+']'
+      r.db('Raiden').table_create(self.table).run(self.connection)
+      print 'Created table [Raiden.'+self.table+']'
     except Exception, e:
       print 'Error occured during '+self.table+' table creation! Maybe it already exists!'
       print str(e)
 
   def get_data(self):
     a = []
-    d = r.db('raiden').table(self.link_table).filter({'status': 'no'}).pluck('link', 'id').run(self.connection)
+    d = r.db('Raiden').table(self.link_table).filter({'status': 'no'}).pluck('link', 'id').run(self.connection)
     for b in d:
       a.append(b)
     return a
@@ -59,7 +59,7 @@ class dataSaver:
 
   def insertion(self, data):
     print 'inserting'
-    r.db('raiden').table(self.table).insert(data).run(self.connection)
+    r.db('Raiden').table(self.table).insert(data).run(self.connection)
 
   def process_save_data(self, data, gid):
     data_to_save = jsontree.jsontree()

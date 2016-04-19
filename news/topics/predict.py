@@ -13,7 +13,7 @@ class Predict():
 
     cwd = os.path.dirname(__file__)
     dictionary_path = os.path.abspath(os.path.join(cwd, 'models/dictionary.dict'))
-    lda_model_path = os.path.abspath(os.path.join(cwd, 'models/lda_model_50_topics.lda'))
+    lda_model_path = os.path.abspath(os.path.join(cwd, 'models/lda_model_10_topics.lda'))
 
     self.dictionary = corpora.Dictionary.load(dictionary_path)
     self.lda = LdaModel.load(lda_model_path)
@@ -73,18 +73,18 @@ class dataDBHandler:
 
   def create_table(self):
     try:
-      r.db('raiden').table_create(self.topic_table).run(self.connection)
-      print 'Created table [raiden.'+self.topic_table+']'
+      r.db('Raiden').table_create(self.topic_table).run(self.connection)
+      print 'Created table [Raiden.'+self.topic_table+']'
     except Exception, e:
       print 'Error occured during '+self.topic_table+' table creation! Maybe it already exists!'
       print str(e)
 
   def insert_data(self, data):
-    r.db('raiden').table(self.topic_table).insert(data).run(self.connection)
+    r.db('Raiden').table(self.topic_table).insert(data).run(self.connection)
 
   def get_ids(self):
     a = []
-    d = r.db('raiden').table(self.link_table).pluck('city', 'id').group('city').run(self.connection)
+    d = r.db('Raiden').table(self.link_table).pluck('city', 'id').group('city').run(self.connection)
     for b in d:
       temp = {}
       for b1 in b:
@@ -102,7 +102,7 @@ class dataDBHandler:
   def get_desc(self, ids):
     text = ' '
     for _id in ids:
-      d = r.db('raiden').table(self.table).filter({'gid': _id}).pluck('desc').run(self.connection)
+      d = r.db('Raiden').table(self.table).filter({'gid': _id}).pluck('desc').run(self.connection)
       for x in d:
         text += x['desc']
         text += '\n'

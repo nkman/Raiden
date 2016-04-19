@@ -2,7 +2,7 @@ from twitter import twitter
 from news import link_crawler, data_scraper
 from news.topics import data, corpus, train, predict
 
-t_c = twitter.Twitter()
+# t_c = twitter.Twitter()
 # t_c.stream_location()
 
 # crawl = link_crawler.LinkCrawler()
@@ -11,13 +11,13 @@ t_c = twitter.Twitter()
 scrap = data_scraper.dataSaver()
 scrap.start()
 
-# tagging = data.dataHandler()
-# tagging.iterate_data()
+tagging = data.dataHandler()
+tagging.iterate_data()
 
-# corpus_c = corpus.corpusHandler()
-# corpus_c.iterate_tags()
+corpus_c = corpus.corpusHandler()
+corpus_c.iterate_tags()
 
-# train.start_training()
+train.start_training()
 
 dbh = predict.dataDBHandler()
 dbh.iterate_text()

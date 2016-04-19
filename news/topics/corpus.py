@@ -19,21 +19,21 @@ class corpusHandler:
 
   def create_table(self):
     try:
-      r.db('raiden').table_create(self.corpus_table).run(self.connection)
-      print 'Created table [raiden.'+self.corpus_table+']'
+      r.db('Raiden').table_create(self.corpus_table).run(self.connection)
+      print 'Created table [Raiden.'+self.corpus_table+']'
     except Exception, e:
       print 'Error occured during '+self.corpus_table+' table creation! Maybe it already exists!'
       print str(e)
 
   def get_data(self):
     a = []
-    d = r.db('raiden').table(self.tags_table).run(self.connection)
+    d = r.db('Raiden').table(self.tags_table).run(self.connection)
     for b in d:
       a.append(b)
     return a
 
   def insert_data(self, data):
-    r.db('raiden').table(self.corpus_table).insert(data).run(self.connection)
+    r.db('Raiden').table(self.corpus_table).insert(data).run(self.connection)
 
   def iterate_tags(self):
     self.tagged_data = self.get_data()
