@@ -8,8 +8,8 @@ from news.topics import data, corpus, train, predict
 # crawl = link_crawler.LinkCrawler()
 # crawl.start()
 
-scrap = data_scraper.dataSaver()
-scrap.start()
+# scrap = data_scraper.dataSaver()
+# scrap.start()
 
 tagging = data.dataHandler()
 tagging.iterate_data()

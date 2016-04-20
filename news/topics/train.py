@@ -35,7 +35,7 @@ class Dictionary(object):
     dictionary = corpora.Dictionary(tag["words"] for tag in self.cursor)
 
     # Filter out tokens that appear
-    dictionary.filter_extremes(keep_n=100000)
+    dictionary.filter_extremes(no_below=5, no_above=0.6, keep_n=100000)
 
     # Assign new word ids to all words.
     dictionary.compactify()
