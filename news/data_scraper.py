@@ -26,6 +26,7 @@ class dataSaver:
   def create_table(self):
     try:
       r.db('Raiden').table_create(self.table).run(self.connection)
+      r.db('Raiden').table_create('failed_links').run(self.connection)
       print 'Created table [Raiden.'+self.table+']'
     except Exception, e:
       print 'Error occured during '+self.table+' table creation! Maybe it already exists!'
@@ -58,8 +59,12 @@ class dataSaver:
       self.data_extractor(datas)
 
   def insertion(self, data):
-    print 'inserting'
-    r.db('Raiden').table(self.table).insert(data).run(self.connection)
+    if(data['desc'] == ""):
+      r.db('Raiden').table('failed_links').insert(data).run(self.connection)
+      print "pass"
+    else:
+      r.db('Raiden').table(self.table).insert(data).run(self.connection)
+      print 'inserting'
 
   def process_save_data(self, data, gid):
     data_to_save = jsontree.jsontree()
