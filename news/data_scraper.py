@@ -50,7 +50,7 @@ class dataSaver:
       self.process_save_data(data, group_1['id'])
 
     except Exception, e:
-      self.insertion({"desc": "", "err": str(e), "gid": group_1['id']})
+      self.insertion({"desc": "", "err": "network error", "gid": group_1['id']})
 
   def data_iterate(self, whole_grouped_data):
     # whole_grouped_data = self.get_data()
@@ -60,7 +60,7 @@ class dataSaver:
 
   def insertion(self, data):
     
-    if(data.desc == ""):
+    if(data['desc'] == ""):
       r.db('Raiden').table('failed_links').insert(data).run(self.connection)
       print "pass"
     else:
