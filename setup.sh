@@ -30,3 +30,6 @@ sudo apt-get install -y gnustep-gui-runtime
 
 echo "Installing necessary libraries"
 sudo pip install -U -r requirements.txt 
+
+echo "Installing the text tagger"
+python -c "import nltk;nltk.download('punkt');nltk.download('maxent_treebank_pos_tagger');"
