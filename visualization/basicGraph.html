@@ -1,0 +1,100 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>Story Chart</title>
+
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+
+        <!-- data. -->
+        <script src="cityPredId.js"></script>
+        <script src="cityCoordId.js"></script>
+
+        <style type="text/css">
+${demo.css}
+        </style>
+        <script type="text/javascript">
+            function getParameterByName(name, url) {
+                if (!url) url = window.location.href;
+                name = name.replace(/[\[\]]/g, "\\$&");
+                var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                    results = regex.exec(url);
+                if (!results) return null;
+                if (!results[2]) return '';
+                return decodeURIComponent(results[2].replace(/\+/g, " "));
+            }
+        </script>
+        <script type="text/javascript">
+$(function () {
+    var ids = getParameterByName('ids');
+    var idsArray = ids.split(",");
+    console.log("No. of Ids are : " + idsArray.length);
+    var showThese = [];
+    for(var i = 0; i < idsArray.length & i < 20; i++){
+        showThese.push(parseInt(idsArray[i]));
+    }
+    console.log(showThese);
+    var finalData = [];
+    for(var i = 0; i < showThese.length; i++){
+        if(typeof(predictionId[showThese[i]]) != "undefined"){
+            var d = [];
+            for(var j = 0; j < 20; j++){
+                if(typeof(predictionId[showThese[i]][j]) != "undefined"){
+                    d.push(predictionId[showThese[i]][j][1]);
+                }
+                else{
+                    d.push(0);
+                }
+            }
+            var x = {
+                name: coordinateId[showThese[i]]["city"] + ", " + coordinateId[showThese[i]]["state"],
+                data: d
+            };
+            finalData.push(x);
+        }
+    }
+    $('#container').highcharts({
+        title: {
+            text: 'Citywise fraction of news Topics',
+            x: -20 //center
+        },
+        subtitle: {
+            text: 'Source: news.google.com',
+            x: -20
+        },
+        xAxis: {
+            categories: ['0', '1', '2', '3', '4', '5',
+                '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19']
+        },
+        yAxis: {
+            title: {
+                text: 'Prediction (in the fraction of 1)'
+            },
+            plotLines: [{
+                value: 0,
+                width: 1,
+                color: '#808080'
+            }]
+        },
+        tooltip: {
+            valueSuffix: ' of 1'
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        series: finalData
+    });
+});
+        </script>
+    </head>
+    <body>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+
+<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+
+    </body>
+</html>
