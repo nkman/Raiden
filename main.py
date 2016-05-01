@@ -5,11 +5,11 @@ from news.topics import data, corpus, train, predict
 # t_c = twitter.Twitter()
 # t_c.stream_location()
 
-crawl = link_crawler.start_parallel()
-crawl.start_link()
+# crawl = link_crawler.start_parallel()
+# crawl.start_link()
 
-# scrap = data_scraper.dataSaver()
-# scrap.start()
+scrap = data_scraper.ParallelScraping()
+scrap.multi_threads()
 
 # tagging = data.Start()
 # tagging.start_tagging()

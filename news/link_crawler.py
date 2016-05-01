@@ -23,6 +23,7 @@ class LinkCrawler:
     self.db = database.Database()
     self.connection = self.db.connection_var()
     self.url = 'https://news.google.com/news?output=rss&num=30&q='
+    self.session = req.Session()
     self.create_table()
 
   def create_table(self):
@@ -50,7 +51,7 @@ class LinkCrawler:
     print "Getting data of "+city["name"]
 
     try:
-      data = req.get(self.url + city['name'], verify=False)
+      data = self.session.get(self.url + city['name'], verify=False)
     except Exception, e:
       print 'Network error for city=' + city['name']
       return
@@ -65,6 +66,8 @@ class LinkCrawler:
       print 'Error in status code for city '+ city["name"]
       os.system('say "Enter the captcha in browser manually"')
       raw_input()
+      self.session = req.Session()
+
 
   def start_lc(self, i_i, per_thread):
 
