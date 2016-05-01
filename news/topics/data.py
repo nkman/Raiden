@@ -1,6 +1,7 @@
 import os, time, nltk
 import rethinkdb as r
 from db import database
+from threading import Thread
 
 FILE_PATH = os.path.join(os.path.dirname(__file__), '../data/stopwords.txt')
 stopwords_file = os.path.abspath(FILE_PATH)
@@ -20,8 +21,6 @@ class dataHandler:
     self.stopwords = {}
     self.populate_stopwords()
 
-    self.__data = self.get_data()
-
   def populate_stopwords(self):
     with open(stopwords_file, 'rU') as f:
       for line in f:
@@ -35,19 +34,28 @@ class dataHandler:
       print 'Error occured during '+self.table+' table creation! Maybe it already exists!'
       print str(e)
 
-  def get_data(self):
+  def get_data(self, defined_num, defined_skip):
     a = []
-    d = r.db('Raiden').table(self.data_table).pluck('desc', 'gid').run(self.connection)
+    d = r.db('Raiden').table(self.data_table).pluck('desc', 'gid').skip(defined_skip).limit(defined_num).run(self.connection)
     for b in d:
       a.append(b)
     return a
+
+  def get_total_data(self):
+    print "Requesting total data"
+    total = r.db('Raiden').table(self.data_table).count().run(self.connection)
+    return total
 
   def insert_data(self, data):
     r.db('Raiden').table(self.table).insert(data).run(self.connection)
 
   
-  def iterate_data(self):
-    for _data in self.__data:
+  def iterate_data(self, defined_num, defined_skip):
+
+    print "Iterating with defined_num=" + str(defined_num)
+    done = 0
+    __data = self.get_data(defined_num, defined_skip)
+    for _data in __data:
       words = []
       #Make array of sentences. Similar to sentences.split('.')
       sentences = nltk.sent_tokenize(_data["desc"].lower())
@@ -70,10 +78,26 @@ class dataHandler:
       }
 
       self.insert_data(tagged_d)
-      self.done += 1
-      if self.done % 100 == 0:
+      done += 1
+      if done % 100 == 0:
         end = time.time()
-        print 'Done ' + str(self.done) + ' out of ' + str(len(self.__data)) + ' in ' + str((end - self.start))
+        print 'Done ' + str(done) + ' out of ' + str(len(__data)) + ' in ' + str((end - self.start))
 
-  def start(self):
-    self.iterate_data()
+class Start:
+
+  def start_tagging(self):
+    datahandler = dataHandler()
+    total_data = datahandler.get_total_data()
+
+    threads = [None]*10
+
+    # Create 10 threads!
+    for i in range(0, 10):
+      x = dataHandler()
+      threads[i] = Thread(target=x.iterate_data, args=(total_data/10, (i*total_data)/10,))
+      threads[i].start()
+    
+    for j in range(0, 10):
+      threads[j].join()
+
+    print "Completed Tagging"
