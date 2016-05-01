@@ -35,7 +35,7 @@ class Dictionary(object):
     dictionary = corpora.Dictionary(tag["words"] for tag in self.cursor)
 
     # Filter out tokens that appear
-    dictionary.filter_extremes(no_below=5, no_above=0.6, keep_n=100000)
+    dictionary.filter_extremes(no_below=5, no_above=0.6, keep_n=1000000)
 
     # Assign new word ids to all words.
     dictionary.compactify()
@@ -78,7 +78,7 @@ def start_training():
   cwd = os.path.dirname(__file__)
   dictionary_path = os.path.abspath(os.path.join(cwd, 'models/dictionary.dict'))
   corpus_path = os.path.abspath(os.path.join(cwd, 'models/corpus.lda-c'))
-  lda_num_topics = 10
+  lda_num_topics = 15
   lda_model_path = os.path.abspath(os.path.join(cwd, 'models/lda_model_10_topics.lda'))
 
   corpus_cursor = dbHandler().get_data()

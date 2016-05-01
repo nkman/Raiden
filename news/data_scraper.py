@@ -34,7 +34,7 @@ class dataSaver:
 
   def get_data(self):
     a = []
-    d = r.db('Raiden').table(self.link_table).filter({'status': 'no'}).pluck('link', 'id').run(self.connection)
+    d = r.db('Raiden').table(self.link_table).filter({'status': 'none'}).pluck('link', 'id').run(self.connection)
     for b in d:
       a.append(b)
     return a

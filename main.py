@@ -5,19 +5,19 @@ from news.topics import data, corpus, train, predict
 # t_c = twitter.Twitter()
 # t_c.stream_location()
 
-# crawl = link_crawler.LinkCrawler()
-# crawl.start()
+crawl = link_crawler.start_parallel()
+crawl.start_link()
 
 # scrap = data_scraper.dataSaver()
 # scrap.start()
 
-tagging = data.dataHandler()
-tagging.iterate_data()
+# tagging = data.Start()
+# tagging.start_tagging()
 
-corpus_c = corpus.corpusHandler()
-corpus_c.iterate_tags()
+# corpus_c = corpus.corpusHandler()
+# corpus_c.iterate_tags()
 
-train.start_training()
+# train.start_training()
 
-dbh = predict.dataDBHandler()
-dbh.iterate_text()
+# dbh = predict.dataDBHandler()
+# dbh.iterate_text()

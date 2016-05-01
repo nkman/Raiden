@@ -5,6 +5,7 @@ import xmltodict, json, os, time
 import requests as req
 import rethinkdb as r
 from db import database
+from threading import Thread
 
 FILE_PATH = os.path.join(os.path.dirname(__file__), 'data/cities.json')
 city_file = os.path.abspath(FILE_PATH)
@@ -13,11 +14,12 @@ f = open(city_file, 'r')
 cities = f.read()
 f.close()
 
+parsed_cities = json.loads(cities)
+
 class LinkCrawler:
   
   def __init__(self):
     self.table = 'links'
-    self.cities = json.loads(cities)
     self.db = database.Database()
     self.connection = self.db.connection_var()
     self.url = 'https://news.google.com/news?output=rss&num=30&q='
@@ -25,22 +27,22 @@ class LinkCrawler:
 
   def create_table(self):
     try:
-      r.db('raiden').table_create(self.table).run(self.connection)
-      print 'Created table [raiden.'+self.table+']'
+      r.db('Raiden').table_create(self.table).run(self.connection)
+      print 'Created table [Raiden.'+self.table+']'
     except Exception, e:
       print 'Error occured during '+self.table+' table creation! Maybe it already exists!'
       print str(e)
   
   def save_json(self, item):
     # item = json.dumps(json.loads(item).update({}))
-    r.db('raiden').table(self.table).insert(item).run(self.connection)
+    r.db('Raiden').table(self.table).insert(item).run(self.connection)
 
   def iterate_item(self, items, city):
     # items = json.loads(items)
     items = items['rss']['channel']['item']
     for item in items:
       item['city'] = city
-      item['status'] = 'no'
+      item['status'] = 'none'
       del item['description']
       self.save_json(item)
 
@@ -64,6 +66,27 @@ class LinkCrawler:
       os.system('say "Enter the captcha in browser manually"')
       raw_input()
 
-  def start(self):
-    for city in self.cities:
-      self.get_data(city)
+  def start_lc(self, i_i, per_thread):
+
+    for i in range(i_i*per_thread, (i_i*per_thread)+per_thread):
+      self.get_data(parsed_cities[i])
+
+total_city = len(parsed_cities)
+total_thread = 4
+
+per_thread = total_city/total_thread
+working_threads = [None]*total_thread
+
+class start_parallel:
+
+  def start_link(self):
+    for i in range(0, total_thread):
+      linkCrawler = LinkCrawler()
+      working_threads[i] = Thread(target=linkCrawler.start_lc, args=(i, per_thread,))
+      working_threads[i].start()
+      i+=1
+
+    for j in range(0, total_thread):
+      working_threads[j].join()
+
+    print "completes the link crawling"
