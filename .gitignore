@@ -8,3 +8,4 @@ rethinkdb_dump*
 *.state
 *.vocab
 *.dict
+trending/new-machine.pem
