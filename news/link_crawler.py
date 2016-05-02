@@ -43,7 +43,7 @@ class LinkCrawler:
     items = items['rss']['channel']['item']
     for item in items:
       item['city'] = city
-      item['status'] = 'none'
+      item['status'] = 'non'
       del item['description']
       self.save_json(item)
 
@@ -73,6 +73,7 @@ class LinkCrawler:
 
     for i in range(i_i*per_thread, (i_i*per_thread)+per_thread):
       self.get_data(parsed_cities[i])
+      i += 1
 
 total_city = len(parsed_cities)
 total_thread = 4
@@ -91,5 +92,6 @@ class start_parallel:
 
     for j in range(0, total_thread):
       working_threads[j].join()
+      j+=1
 
     print "completes the link crawling"

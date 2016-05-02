@@ -96,8 +96,10 @@ class Start:
       x = dataHandler()
       threads[i] = Thread(target=x.iterate_data, args=(total_data/10, (i*total_data)/10,))
       threads[i].start()
+      i += 1
     
     for j in range(0, 10):
       threads[j].join()
+      j += 1
 
     print "Completed Tagging"

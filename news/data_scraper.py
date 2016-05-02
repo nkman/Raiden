@@ -35,7 +35,7 @@ class dataSaver:
 
   def get_data(self):
     a = []
-    d = r.db('Raiden').table(self.link_table).filter({'status': 'no'}).pluck('link', 'id').run(self.connection)
+    d = r.db('Raiden').table(self.link_table).filter({'status': 'none'}).pluck('link', 'id').run(self.connection)
     for b in d:
       a.append(b)
     return a
@@ -107,5 +107,6 @@ class ParallelScraping:
       threads_d[i] = Thread(target=data_saver.data_iterate, args=(data_d,))
       threads_d[i].start()
 
-    for i in range(0, total_threads):
-      threads_d[i].join()
+    for j in range(0, total_threads):
+      threads_d[j].join()
+      j += 1
