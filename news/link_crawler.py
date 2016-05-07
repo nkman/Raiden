@@ -64,8 +64,8 @@ class LinkCrawler:
         print 'Error '+str(e)+' has been occured for city='+city["name"]
     else:
       print 'Error in status code for city '+ city["name"]
-      os.system('say "Enter the captcha in browser manually"')
-      raw_input()
+      #os.system('say "Enter the captcha in browser manually"')
+      #raw_input()
       self.session = req.Session()
 
 

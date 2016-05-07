@@ -88,17 +88,17 @@ class Start:
   def start_tagging(self):
     datahandler = dataHandler()
     total_data = datahandler.get_total_data()
+    total_threads = 4
+    threads = [None]*total_threads
 
-    threads = [None]*10
-
-    # Create 10 threads!
-    for i in range(0, 10):
+    # Create total_threads threads!
+    for i in range(0, total_threads):
       x = dataHandler()
-      threads[i] = Thread(target=x.iterate_data, args=(total_data/10, (i*total_data)/10,))
+      threads[i] = Thread(target=x.iterate_data, args=(total_data/total_threads, (i*total_data)/total_threads,))
       threads[i].start()
       i += 1
     
-    for j in range(0, 10):
+    for j in range(0, total_threads):
       threads[j].join()
       j += 1
 

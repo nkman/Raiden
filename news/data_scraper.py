@@ -35,7 +35,7 @@ class dataSaver:
 
   def get_data(self):
     a = []
-    d = r.db('Raiden').table(self.link_table).filter({'status': 'none'}).pluck('link', 'id').run(self.connection)
+    d = r.db('Raiden').table(self.link_table).filter({'status': 'non'}).pluck('link', 'id').run(self.connection)
     for b in d:
       a.append(b)
     return a
@@ -80,7 +80,8 @@ class dataSaver:
 #Get total count of the table data
 #Create 10 threads, parallalize it
   def get_table_count(self):
-    d = r.db('Raiden').table(self.link_table).count().run(self.connection)
+    #Error here caused the duplicates in the dataset.
+    d = r.db('Raiden').table(self.link_table).filter({'status': 'non'}).count().run(self.connection)
     return d
 
   def get_data_skiped(self, skip_d, limit_d):
