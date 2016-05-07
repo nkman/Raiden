@@ -1,9 +1,4 @@
 import json
-import requests as req
-
-SERVER_KEY = "AIzaSyCIplbLWIyiankR9NoNmOd6fSbuZLvOkGc"
-
-base = "https://maps.googleapis.com/maps/api/geocode/json?address="
 
 f = open("cities.json")
 

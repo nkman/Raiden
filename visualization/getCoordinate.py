@@ -20,7 +20,7 @@ for jsn in txtJson:
 	jLatLng = json.loads(r.text)
 	lat = jLatLng['results'][0]['geometry']['location']['lat']
 	lng = jLatLng['results'][0]['geometry']['location']['lng']
-	jsn["city"]["lat"] = state(lat)
+	jsn["city"]["lat"] = str(lat)
 	jsn["city"]["lng"] = str(lng)
 	print i
 	i = i + 1

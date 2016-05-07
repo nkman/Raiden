@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Title</title>
+	<title>Topic Fraction</title>
 	<style type="text/css">
 		iframe {
 		    border: none;
@@ -80,6 +80,8 @@ L.mapbox.accessToken = 'pk.eyJ1IjoicHJhdmoiLCJhIjoiNjc1YTVjYTEzMjAyNjU4ZTgwNjQyM
       }
     }
     map.addLayer(markers);
+
+    //This will be called if with move the map window
     function onmove() {
     // Get the map bounds - the top-left and bottom-right locations.
     var inBounds = [],
@@ -91,16 +93,19 @@ L.mapbox.accessToken = 'pk.eyJ1IjoicHJhdmoiLCJhIjoiNjc1YTVjYTEzMjAyNjU4ZTgwNjQyM
             inBounds.push(marker.options.title);
         }
     });
-    // Display a list of markers.
+    // Add all the visible points to showThese.
     showThese = inBounds;
+    // showThese will be send to the highchart window,
+    // And only the cities listed in showThese will be shown in the graph.
 	var iframe = document.getElementById('graph');
 	iframe.src = "basicGraph.html?ids=" + showThese;
     }
     map.on('move', onmove);
 
-    // call onmove off the bat so that the list is populated.
+    // call onmove off the bat update the visible points in current window.
     // otherwise, there will be no markers listed until the map is moved.
     onmove();
+
 </script>
 
 <!--########################    PopUp    ##################################-->
@@ -159,7 +164,7 @@ $( document ).on( "pagecreate", function() {
 });
 </script>
 
-<a href="#popupMap" data-rel="popup" data-position-to="window" class="ui-btn ui-corner-all ui-shadow ui-btn-inline" style="right: 0; bottom: 0; position: absolute; margin-bottom: 30px">News Prediction</a>
+<a href="#popupMap" data-rel="popup" data-position-to="window" class="ui-btn ui-corner-all ui-shadow ui-btn-inline" style="right: 0; bottom: 0; position: absolute; margin-bottom: 30px">Topic Fraction</a>
 
 </body>
 </html>
